@@ -5,7 +5,31 @@ using UnityEngine;
 public class PlayerComponent : MonoBehaviour
 {
 
-    public float speed;
+    private static PlayerComponent _instance;
+
+    public static PlayerComponent Instance
+    {
+        get
+        {
+            return _instance;
+        }
+    }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
+    [SerializeField]
+    private float speed;
+    private int count;
 
     private Rigidbody rb;
 
@@ -13,6 +37,7 @@ public class PlayerComponent : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        count = 0;
     }
 
     // Update is called once per frame
@@ -29,5 +54,11 @@ public class PlayerComponent : MonoBehaviour
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
         rb.AddForce(movement * speed);
+    }
+
+    public void IncreaseCount()
+    {
+        count++;
+        Debug.Log(count);
     }
 }
