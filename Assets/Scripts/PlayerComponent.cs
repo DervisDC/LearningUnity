@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerComponent : MonoBehaviour
 {
@@ -27,17 +28,26 @@ public class PlayerComponent : MonoBehaviour
         }
     }
 
-    [SerializeField]
-    private float speed;
     private int count;
 
+    [SerializeField]
+    private float speed;
+    [SerializeField]
+    private Text countText;
+    [SerializeField]
+    private Text winText;
+
     private Rigidbody rb;
+    private GameObject pickUps;
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   
         rb = GetComponent<Rigidbody>();
+        pickUps = GameObject.Find("Pick Ups");
         count = 0;
+        winText.text = "";
+        SetCountText();
     }
 
     // Update is called once per frame
@@ -59,6 +69,16 @@ public class PlayerComponent : MonoBehaviour
     public void IncreaseCount()
     {
         count++;
-        Debug.Log(count);
+        SetCountText();
+        if (pickUps.transform.childCount == 1)
+        {
+            winText.text = "You Won!";
+        }
+        Debug.Log(pickUps.transform.childCount);
+    }
+
+    void SetCountText()
+    {
+        countText.text = "Count: " + count.ToString();
     }
 }
